@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jenkins × GitHub Build Lab</title>
+  <meta name="description" content="Automated Application Build Using Jenkins and GitHub - DevOps practical demonstration dashboard">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234f8cff'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M9 16l5 5 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============================ Sidebar ============================ -->
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9"/></svg>
+      </div>
+      <div>
+        <div class="brand-title">BuildLab</div>
+        <div class="brand-sub">Jenkins × GitHub</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="#dashboard" class="nav-link active" data-section="dashboard">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="#pipeline" class="nav-link" data-section="pipeline">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M7.5 12h2M14.5 12h2"/></svg>
+        Pipeline
+      </a>
+      <a href="#source" class="nav-link" data-section="source">
+        <svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
+        Source Code
+      </a>
+      <a href="#console" class="nav-link" data-section="console">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/></svg>
+        Console Output
+      </a>
+      <a href="#history" class="nav-link" data-section="history">
+        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>
+        Build History
+      </a>
+      <a href="#config" class="nav-link" data-section="config">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        Configuration
+      </a>
+      <a href="#guide" class="nav-link" data-section="guide">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>
+        Jenkins Setup Guide
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="mode-pill" id="sidebarMode">
+        <span class="dot"></span><span id="sidebarModeText">Simulated demo</span>
+      </div>
+      <p class="sidebar-note">DevOps Lab Practical</p>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ============================ Main ============================ -->
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="topbar-text">
+        <p class="eyebrow">DevOps Experiment</p>
+        <h1>Automated Application Build Using Jenkins and GitHub</h1>
+      </div>
+      <span class="badge badge-sim" id="modeBadge" title="No real GitHub or Jenkins connection is made in this mode">
+        <span class="dot"></span><span id="modeBadgeText">Simulated Demo</span>
+      </span>
+    </header>
+
+    <!-- -------------------------- Dashboard -------------------------- -->
+    <section id="dashboard" class="section">
+      <div class="aim card">
+        <div class="aim-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+        </div>
+        <div>
+          <h2>Aim</h2>
+          <p>To integrate Jenkins with a GitHub repository, retrieve source code, and execute an automated application build.</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="card stat">
+          <p class="stat-label">Project</p>
+          <p class="stat-value" id="statProject">Hello-Java-Build</p>
+          <p class="stat-meta">Java Hello World</p>
+        </div>
+        <div class="card stat">
+          <p class="stat-label">Repository</p>
+          <p class="stat-value stat-url" id="statRepo">—</p>
+          <p class="stat-meta">Branch: <span id="statBranch">main</span></p>
+        </div>
+        <div class="card stat">
+          <p class="stat-label">Build Status</p>
+          <p class="stat-value"><span class="status-chip" id="statStatus" data-status="idle">Not built yet</span></p>
+          <p class="stat-meta" id="statBuildNo">No builds yet</p>
+        </div>
+        <div class="card stat">
+          <p class="stat-label">Last Build</p>
+          <p class="stat-value" id="statLastTime">—</p>
+          <p class="stat-meta" id="statLastDuration">Duration: —</p>
+        </div>
+      </div>
+
+      <div class="service-grid">
+        <div class="card service">
+          <div class="service-head">
+            <div class="service-logo github" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3.1-.4 6.4-1.5 6.4-7A5.4 5.4 0 0 0 20 4.8 5 5 0 0 0 19.9 1S18.7.6 16 2.5a13.4 13.4 0 0 0-7 0C6.3.6 5.1 1 5.1 1A5 5 0 0 0 5 4.8a5.4 5.4 0 0 0-1.5 3.7c0 5.4 3.3 6.6 6.4 7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>
+            </div>
+            <div>
+              <h3>GitHub Repository</h3>
+              <p class="muted">Source control (Git)</p>
+            </div>
+            <span class="status-chip" id="githubStatus" data-status="pending">Simulated</span>
+          </div>
+          <dl class="kv">
+            <dt>Repository URL</dt><dd id="githubUrl" class="mono">—</dd>
+            <dt>Branch</dt><dd id="githubBranch" class="mono">main</dd>
+            <dt>Source file</dt><dd class="mono">Hello.java</dd>
+          </dl>
+          <p class="service-note" id="githubNote">The demo does not contact GitHub. Jenkins clones this repository during a real build.</p>
+        </div>
+
+        <div class="card service">
+          <div class="service-head">
+            <div class="service-logo jenkins" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7v3a7 7 0 0 0 14 0V9a7 7 0 0 0-7-7z"/><path d="M9 10h.01M15 10h.01M9.5 14.5a3.5 3.5 0 0 0 5 0"/><path d="M7 19l-2 3M17 19l2 3"/></svg>
+            </div>
+            <div>
+              <h3>Jenkins Server</h3>
+              <p class="muted">Build automation</p>
+            </div>
+            <span class="status-chip" id="jenkinsStatus" data-status="pending">Simulated</span>
+          </div>
+          <dl class="kv">
+            <dt>Server URL</dt><dd id="jenkinsUrl" class="mono">—</dd>
+            <dt>Job name</dt><dd id="jenkinsJob" class="mono">Hello-Java-Build</dd>
+            <dt>Job type</dt><dd>Freestyle project</dd>
+          </dl>
+          <p class="service-note" id="jenkinsNote">Checking backend…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- -------------------------- Pipeline -------------------------- -->
+    <section id="pipeline" class="section">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Build Pipeline</h2>
+            <p class="muted" id="pipelineSubtitle">Simulated demo. Stages run in your browser and no real GitHub or Jenkins connection is made.</p>
+          </div>
+          <div class="actions">
+            <label class="toggle" title="Show what a failed build looks like (compile error)">
+              <input type="checkbox" id="simulateFailure">
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              <span>Simulate failure</span>
+            </label>
+            <button class="btn btn-ghost" id="resetBtn" type="button">
+              <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+            <button class="btn btn-outline hidden" id="realBuildBtn" type="button" title="Triggers the job on the Jenkins server configured in the backend">
+              <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Run Real Jenkins Build
+            </button>
+            <button class="btn btn-primary" id="runBtn" type="button">
+              <svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>
+              Run Demo Build
+            </button>
+          </div>
+        </div>
+
+        <div class="progress-wrap" aria-label="Pipeline progress">
+          <div class="progress-info">
+            <span id="progressLabel">Ready</span>
+            <span id="progressPct">0%</span>
+          </div>
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <ol class="stages" id="stages"><!-- rendered by app.js --></ol>
+
+        <div class="result-banner hidden" id="resultBanner" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- --------------------- Source + Console --------------------- -->
+    <div class="split">
+      <section id="source" class="section">
+        <div class="card code-card">
+          <div class="card-head">
+            <div>
+              <h2>Source Code</h2>
+              <p class="muted"><span class="mono">sample-app/Hello.java</span></p>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="copyCodeBtn" type="button">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              Copy
+            </button>
+          </div>
+          <div class="window">
+            <div class="window-bar"><span></span><span></span><span></span><em>Hello.java</em></div>
+            <pre class="code" id="codeView"><code></code></pre>
+          </div>
+          <div class="code-explain">
+            <p><strong>javac Hello.java</strong> compiles the source into <span class="mono">Hello.class</span> (bytecode).</p>
+            <p><strong>java Hello</strong> runs the class on the JVM and prints the output.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="console" class="section">
+        <div class="card console-card">
+          <div class="card-head">
+            <div>
+              <h2>Console Output</h2>
+              <p class="muted" id="consoleTitle">Waiting for a build</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-ghost btn-sm" id="copyLogBtn" type="button">
+                <svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="window">
+            <div class="window-bar"><span></span><span></span><span></span><em>Console Output</em></div>
+            <pre class="console" id="consoleView" aria-live="off"><span class="log-muted">Click "Run Demo Build" to start the pipeline.</span></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- -------------------------- History -------------------------- -->
+    <section id="history" class="section">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Build History</h2>
+            <p class="muted">Stored in this browser only</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="clearHistoryBtn" type="button">
+            <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+            Clear history
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Build #</th><th>Date &amp; Time</th><th>Duration</th><th>Mode</th><th>Result</th></tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+        <p class="empty hidden" id="historyEmpty">No builds yet. Run the demo build to create the first entry.</p>
+      </div>
+    </section>
+
+    <!-- -------------------------- Config -------------------------- -->
+    <section id="config" class="section">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Configuration</h2>
+            <p class="muted">These values are shown on the dashboard and used in the demo logs</p>
+          </div>
+        </div>
+        <form class="form" id="configForm" novalidate>
+          <div class="field">
+            <label for="cfgRepo">GitHub repository URL</label>
+            <input id="cfgRepo" type="url" placeholder="https://github.com/your-username/jenkins-github-build-demo.git" autocomplete="off" required>
+            <small class="error-text" id="cfgRepoErr"></small>
+          </div>
+          <div class="field">
+            <label for="cfgBranch">Branch</label>
+            <input id="cfgBranch" type="text" placeholder="main" autocomplete="off" required>
+            <small class="error-text" id="cfgBranchErr"></small>
+          </div>
+          <div class="field">
+            <label for="cfgJenkins">Jenkins server URL</label>
+            <input id="cfgJenkins" type="url" placeholder="http://localhost:8080" autocomplete="off" required>
+            <small class="error-text" id="cfgJenkinsErr"></small>
+          </div>
+          <div class="field">
+            <label for="cfgJob">Jenkins job name</label>
+            <input id="cfgJob" type="text" placeholder="Hello-Java-Build" autocomplete="off" required>
+            <small class="error-text" id="cfgJobErr"></small>
+          </div>
+          <div class="form-note">
+            <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            <p><strong>No credentials here.</strong> Jenkins usernames and API tokens belong in server-side environment variables (<span class="mono">.env</span>), never in the browser. For real builds, the backend uses its own <span class="mono">JENKINS_URL</span> and <span class="mono">JENKINS_JOB</span> settings.</p>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-ghost" type="button" id="cfgDefaultsBtn">Restore defaults</button>
+            <button class="btn btn-primary" type="submit">Save configuration</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- -------------------------- Guide -------------------------- -->
+    <section id="guide" class="section">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2>Jenkins Setup Guide</h2>
+            <p class="muted">How to run this experiment on a real Jenkins server</p>
+          </div>
+        </div>
+        <ol class="guide">
+          <li>
+            <h3>Push the project to GitHub</h3>
+            <p>Create a public repository and push this project (Hello.java is in <span class="mono">sample-app/</span>):</p>
+            <pre class="snippet">git init
+git add .
+git commit -m "Add Jenkins x GitHub build demo"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/jenkins-github-build-demo.git
+git push -u origin main</pre>
+          </li>
+          <li>
+            <h3>Install and start Jenkins</h3>
+            <p>Install Jenkins with the Windows installer (or run <span class="mono">java -jar jenkins.war</span>), open <span class="mono">http://localhost:8080</span>, unlock it, and install the <em>suggested plugins</em> (these include the Git plugin). Jenkins needs Git and a JDK on its machine.</p>
+          </li>
+          <li>
+            <h3>Create a Freestyle job</h3>
+            <p><em>New Item</em> → name <span class="mono">Hello-Java-Build</span> → <em>Freestyle project</em> → OK.</p>
+          </li>
+          <li>
+            <h3>Connect the GitHub repository</h3>
+            <p><em>Source Code Management</em> → <em>Git</em> → Repository URL <span class="mono">https://github.com/YOUR-USERNAME/jenkins-github-build-demo.git</span>, Branch Specifier <span class="mono">*/main</span>. A public repository needs no credentials.</p>
+          </li>
+          <li>
+            <h3>Add the build commands</h3>
+            <p><em>Build Steps</em> → <em>Add build step</em> → <em>Execute Windows batch command</em>:</p>
+            <pre class="snippet">cd sample-app
+javac Hello.java
+java Hello</pre>
+            <p class="muted small">On Linux, use <em>Execute shell</em> with the same two commands. See <span class="mono">jenkins/</span> for complete versions.</p>
+          </li>
+          <li>
+            <h3>Trigger the build</h3>
+            <p>Click <em>Save</em> → <em>Build Now</em>. Open the build → <em>Console Output</em>. It should show <span class="mono">Hello, Jenkins!</span> and <span class="mono">Finished: SUCCESS</span>.</p>
+          </li>
+          <li>
+            <h3>(Optional) Connect this dashboard</h3>
+            <p>In Jenkins: your name → <em>Security</em> → <em>API Token</em> → <em>Add new token</em>. Copy <span class="mono">.env.example</span> to <span class="mono">.env</span>, fill in the values, and restart <span class="mono">python app.py</span>. The <em>Run Real Jenkins Build</em> button then appears.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Automated Application Build Using Jenkins and GitHub · DevOps Lab Practical</p>
+      <p class="muted">Simulated builds run entirely in your browser. Real builds go through the Flask backend.</p>
+    </footer>
+  </main>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

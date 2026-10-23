@@ -1,0 +1,49 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<!--
+  Sample Jenkins Freestyle job: Hello-Java-Build
+  - Source Code Management: Git (public GitHub repository, branch main)
+  - Build Step: Execute Windows batch command (javac + java)
+  Import (optional) with Jenkins CLI:
+    java -jar jenkins-cli.jar -s http://localhost:8080/ -auth USER:API_TOKEN create-job Hello-Java-Build < freestyle-job-config.xml
+  Requires the "Git" plugin (installed with the suggested plugins).
+-->
+<project>
+  <description>Automated Application Build Using Jenkins and GitHub - compiles and runs Hello.java</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.plugins.git.GitSCM">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/Vigneshb726/jenkins-github-build-demo.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/main</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="empty-list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>echo Checking out source code
+cd sample-app
+dir /b *.java
+echo Compiling Hello.java
+javac Hello.java || exit /b 1
+echo Running Hello.java
+java Hello || exit /b 1</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
