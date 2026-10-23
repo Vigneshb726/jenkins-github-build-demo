@@ -139,10 +139,6 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 .card-head .muted { margin-top: 3px; }
 .actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-.aim { display: flex; gap: 16px; align-items: center; margin-bottom: 18px; }
-.aim-icon { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(139, 92, 246, 0.15); color: #a78bfa; flex-shrink: 0; }
-.aim-icon svg { width: 24px; height: 24px; }
-.aim p { color: #c7cce3; margin-top: 2px; }
 
 .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 18px; }
 .stat { position: relative; overflow: hidden; }
